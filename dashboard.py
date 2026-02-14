@@ -10,7 +10,6 @@ from streamlit_folium import st_folium
 #MESSAGES_API = "http://127.0.0.1:5000/messages"
 import os
 BACKEND_URL = "https://delivery-flask-d1ja.onrender.com/" 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:5000")  # si variable non définie, il prend le local
 API_URL = f"{BACKEND_URL}/clients"
 DELIVER_URL = f"{BACKEND_URL}/deliver"
 DELETE_URL = f"{BACKEND_URL}/delete_client"
