@@ -160,7 +160,16 @@ else:
 # Map Section
 # ---------------------------
 st.subheader("🗺 Client Locations")
-df_map = df.dropna(subset=["latitude", "longitude"])
+# Keep only rows with valid numeric coordinates
+df_map = df.dropna(subset=["latitude", "longitude"]).copy()
+
+# Convert to numeric (force errors to NaN)
+df_map["latitude"] = pd.to_numeric(df_map["latitude"], errors="coerce")
+df_map["longitude"] = pd.to_numeric(df_map["longitude"], errors="coerce")
+
+# Drop any rows that failed conversion
+df_map = df_map.dropna(subset=["latitude", "longitude"])
+
 if not df_map.empty:
     map_center = [df_map["latitude"].mean(), df_map["longitude"].mean()]
     m = folium.Map(location=map_center, zoom_start=12)
@@ -178,4 +187,4 @@ if not df_map.empty:
 
     st_folium(m, width=1200, height=500)
 else:
-    st.info("No client coordinates available for the map.")
+    st.info("No valid client coordinates available for the map.")
