@@ -127,6 +127,9 @@ if st.button("❌ Delete Client"):
 # ---------------------------
 # Messages Section
 # ---------------------------
+# ---------------------------
+# Messages Section
+# ---------------------------
 st.subheader("📩 Recent Messages")
 try:
     response = requests.get(MESSAGES_API)
@@ -141,10 +144,11 @@ if messages:
     msg_df["received_at"] = pd.to_datetime(msg_df["received_at"])
     msg_df = msg_df.sort_values("received_at", ascending=False).head(10)
 
-    # Assure colonne name existe
+    # Assure que la colonne "name" existe
     if "name" not in msg_df.columns:
         msg_df["name"] = "unknown"
 
+    # Optional filter by client
     client_filter = st.selectbox("Filter Messages by Client", ["All"] + msg_df["name"].unique().tolist())
     if client_filter != "All":
         msg_df = msg_df[msg_df["name"] == client_filter]
@@ -160,14 +164,15 @@ else:
 # Map Section
 # ---------------------------
 st.subheader("🗺 Client Locations")
-# Keep only rows with valid numeric coordinates
+
+# Garder uniquement les clients avec coordonnées valides
 df_map = df.dropna(subset=["latitude", "longitude"]).copy()
 
-# Convert to numeric (force errors to NaN)
+# Convertir en float (force NaN pour valeurs invalides)
 df_map["latitude"] = pd.to_numeric(df_map["latitude"], errors="coerce")
 df_map["longitude"] = pd.to_numeric(df_map["longitude"], errors="coerce")
 
-# Drop any rows that failed conversion
+# Supprimer les lignes encore invalides
 df_map = df_map.dropna(subset=["latitude", "longitude"])
 
 if not df_map.empty:
