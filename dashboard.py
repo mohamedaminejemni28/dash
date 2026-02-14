@@ -4,10 +4,6 @@ import requests
 import folium
 from streamlit_folium import st_folium
 
-#API_URL = "http://127.0.0.1:5000/clients"
-#DELIVER_URL = "http://127.0.0.1:5000/deliver"
-#DELETE_URL = "http://127.0.0.1:5000/delete_client"
-#MESSAGES_API = "http://127.0.0.1:5000/messages"
 import os
 BACKEND_URL = "https://delivery-flask-d1ja.onrender.com/" 
 API_URL = f"{BACKEND_URL}/clients"
